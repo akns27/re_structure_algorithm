@@ -8,8 +8,8 @@
       "args": [],
       "stopAtEntry": false,
       "externalConsole": true,
-      "cwd": "c:/Users/gky27/OneDrive/바탕 화면/코딩용/C/re_structure_algorithm",
-      "program": "c:/Users/gky27/OneDrive/바탕 화면/코딩용/C/re_structure_algorithm/build/Debug/outDebug",
+      "cwd": "c:/Users/gky27/OneDrive/사진/바탕 화면/코딩용/C/re_structure_algorithm",
+      "program": "c:/Users/gky27/OneDrive/사진/바탕 화면/코딩용/C/re_structure_algorithm/build/Debug/outDebug",
       "MIMode": "gdb",
       "miDebuggerPath": "gdb",
       "setupCommands": [
