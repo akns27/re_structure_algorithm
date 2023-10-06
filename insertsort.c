@@ -28,8 +28,8 @@ void Insert(int arr[], int n) {
 }
 int main(void) {
 
-  int list02[] = {5, 3, 8, 1, 2, 7};
+    int list02[] = {5, 3, 8, 1, 2, 7};
 
-  Insert(list02, sizeof(list02)/sizeof(int));
+    Insert(list02, sizeof(list02)/sizeof(int));
 
 }
