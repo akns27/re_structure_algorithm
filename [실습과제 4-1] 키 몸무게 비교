@@ -1,0 +1,50 @@
+#include <stdio.h>
+
+// 학생 구조체 정의
+typedef struct {
+    int student_number;
+    double height;
+    double weight;
+} Student;
+
+int main() {
+    int N;
+    scanf("%d", &N);
+
+    // 학생 배열을 동적으로 할당
+    Student *students = (Student *)malloc(N * sizeof(Student));
+
+    // 학생 정보 입력
+    for (int i = 0; i < N; i++) {
+        scanf("%d %lf %lf", &students[i].student_number, &students[i].height, &students[i].weight);
+    }
+
+    // 키와 몸무게의 평균 계산
+    double total_height = 0.0;
+    double total_weight = 0.0;
+    for (int i = 0; i < N; i++) {
+        total_height += students[i].height;
+        total_weight += students[i].weight;
+    }
+    double average_height = total_height / N;
+    double average_weight = total_weight / N;
+
+    printf("%.1lf %.1lf\n", average_height, average_weight);
+
+    // 학생들의 키와 몸무게를 비교하여 출력
+    for (int i = 0; i < N; i++) {
+        printf("%d ", students[i].student_number);
+        if (students[i].height >= average_height && students[i].weight >= average_weight) {
+            printf("super\n");
+        } else if (students[i].height >= average_height || students[i].weight >= average_weight) {
+            printf("average\n");
+        } else {
+            printf("below\n");
+        }
+    }
+
+    // 동적 할당된 배열 메모리 해제
+    free(students);
+
+    return 0;
+}
