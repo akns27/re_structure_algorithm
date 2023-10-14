@@ -1,0 +1,15 @@
+#include <stdio.h>
+int main() {
+	int A, B, i,sum=0;
+	scanf("%d %d", &A, &B);
+	for(i = A; i<=B; i++){
+		if (i == B){
+			sum += i;
+			printf("%d = %d", i, sum);
+			break;
+		}
+		printf("%d + ", i);
+		sum += i;
+	}
+	return 0;
+}
