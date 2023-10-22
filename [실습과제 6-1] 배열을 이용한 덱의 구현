@@ -1,0 +1,161 @@
+ #include <stdio.h>
+#include <stdlib.h>
+//덱은 양방향에서 넣고빼기 가능
+#define MAX_DEQUE_SIZE 5
+
+typedef int element;
+typedef struct {//구조체 선언
+	element data[MAX_DEQUE_SIZE];
+	int front, rear;
+} DequeType;
+
+// 오류 함수x
+void error(char *message) {
+	puts(message);
+	return;
+}
+//DequeType *q는 q는 구조체의 유형, DequeType의 객체를 가리킬 수 있는 포인터
+// 초기화 front와 rear를 초기화 해줌(=같은 곳에 위치함), 덱이 비어있음을 보여줌 
+void initDeque(DequeType* q) {
+    q->front = 0;
+    q->rear = 0;
+}
+
+// 공백 상태 검출 함수, front가 rear와 같다면 덱이 아무 것도 없는 공백상태
+int isEmpty(DequeType* q) {
+    return q->front == q->rear;
+}
+
+// 포화 상태 검출 함수,  rear+1함으로서 다음에 입력할 원소의 위치를 알게됨, 배열이 끝에 도달하면 배열이 처음으로
+//돌아가게 함 -> 배열이 꽉찼다는걸 알 수 있음
+//q->front가 같다면 덱이 포화상태라는 것
+int isFull(DequeType* q) {
+    return (q->rear + 1) % MAX_DEQUE_SIZE == q->front;
+}
+
+// 덱 출력 함수(원형 큐 출력과 동일)
+void printDeque(DequeType* q) {
+    int i = q->front;
+    printf("DEQUE(front=%d rear=%d) = ", q->front, q->rear);
+    if (isEmpty(q)) {
+        printf("덱은 공백상태입니다.\n");
+        return;
+    }
+    do {
+        i = (i + 1) % MAX_DEQUE_SIZE;//다음 요소의 인덱스 계산한걸 i에 넣음
+        printf("%d | ", q->data[i]);//프린트
+        if (i == q->rear) break;//rear와 같다면 덱의 끝에 도달함
+    } while (i != q->front);//front와 같을 때까지 반복 ->같으면 나가기
+    printf("\n");
+}
+
+// front 삽입 함수, ement는 코드에서 정의한 데이터 유형의 별명->item이라
+//는 데이터를 덱의 front 쪽에 추가하게 하는 함수
+void addFront(DequeType* q, element item) {
+    if (isFull(q)) {
+        error("덱이 포화 상태입니다.");
+        return;
+    }
+	//rear는 +1(오른쪽) front = -1(왼쪽) get rear =  -1 get front = +1 ->배열 끝에 닿으면 다시 처음으로 돌아가게
+    q->data[q->front] = item; //front에 item에 저장된 데이터를 추가
+    q->front = (q->front - 1 + MAX_DEQUE_SIZE) % MAX_DEQUE_SIZE;
+	//q->front 포인터를 front를 새로 추가된 요소로 이동
+	//front에 아이템을 넣고 저장을 시키고 -1을 했으니까 [0]에는 값이 없고, 삭제나 get은 +1먼저 해주고 값을 반환
+}
+
+// rear 삽입 함수
+void addRear(DequeType* q, element item) {
+    if (isFull(q)) {
+        error("덱이 포화 상태입니다.");
+        return;
+    }
+    q->rear = (q->rear + 1) % MAX_DEQUE_SIZE;
+    q->data[q->rear] = item;//rear에 item의 데이터 삽입
+}
+
+// front 삭제 함수
+element deleteFront(DequeType* q) {
+    if (isEmpty(q)) {
+        error("덱이 공백 상태입니다.");
+        return -1; // 오류 시 -1 반환
+    }
+    q->front = (q->front + 1) % MAX_DEQUE_SIZE;//한계에 부딪히면 또 처음으로 돌아가게 %max..를 해줌
+    return q->data[q->front];//data배열의 q->pront 리턴
+}
+
+// rear 삭제 함수
+element deleteRear(DequeType* q) {
+    if (isEmpty(q)) {
+        error("덱이 공백 상태입니다.");
+        return -1; // 오류 시 -1 반환
+    }
+    element deleted = q->data[q->rear];//delited에 rear값을 넣기
+    q->rear = (q->rear - 1 + MAX_DEQUE_SIZE) % MAX_DEQUE_SIZE;//0만나면 되돌아가야하나 MAX..를 더해줌
+    return deleted;
+}
+//get은 꺼냈다가 다시 넣어줌
+// front get 함수, 덱이 비어있지 않은 상태에서 호출되면, front 위치에 있는 요소를 반환
+element getFront(DequeType* q) {
+    if (isEmpty(q)) {
+        error("덱이 공백 상태입니다.");
+        return -1; // 오류 시 -1 반환
+    }
+    int front_idx = (q->front + 1) % MAX_DEQUE_SIZE;//+1을 해주는 이유는 쓰레기값등이 출력될 수 있어서
+    return q->data[front_idx];
+}
+
+// rear get 함수, 덱이 비어있지 않은 상태에서 호출되면 rear 위치에 있는 요소를 반환
+element getRear(DequeType* q) {
+    if (isEmpty(q)) {
+        error("덱이 공백 상태입니다.");
+        return -1; // 오류 시 -1 반환
+    }
+    return q->data[q->rear];
+}
+
+int main() {
+    DequeType deque;
+    int command;
+    element idata;
+
+    initDeque(&deque);
+    while (1) {
+        printf("명령어 입력\n1: front 삽입   2: rear 삽입   3: front 삭제   4: rear 삭제   5: front get   6: rear get   7: exit\n");
+        scanf("%d", &command);
+        switch (command) {
+            case 1:
+                printf("삽입할 데이터 입력 : ");
+                scanf("%d", &idata);
+                addFront(&deque, idata);
+                printDeque(&deque);
+                break;
+            case 2:
+                printf("삽입할 데이터 입력 : ");
+                scanf("%d", &idata);
+                addRear(&deque, idata);
+                printDeque(&deque);
+                break;
+            case 3:
+                printf("삭제한 데이터 : %d\n", deleteFront(&deque));
+                printDeque(&deque);
+                break;
+            case 4:
+                printf("삭제한 데이터 : %d\n", deleteRear(&deque));
+                printDeque(&deque);
+                break;
+            case 5:
+                printf("얻은 데이터 : %d\n", getFront(&deque));
+                printDeque(&deque);
+                break;
+            case 6:
+                printf("얻은 데이터 : %d\n", getRear(&deque));
+                printDeque(&deque);
+                break;
+            case 7:
+                return 0;
+        }
+        printf("\n");
+    }
+
+    return 0;
+}
