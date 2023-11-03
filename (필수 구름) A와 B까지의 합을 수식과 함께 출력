@@ -1,0 +1,30 @@
+/*
+#include <stdio.h>
+int main() {
+	int A, B, i,sum=0;
+	scanf("%d %d", &A, &B);
+	for(i = A; i<=B; i++){
+		if (i == B){
+			sum += i;
+			printf("%d = %d", i, sum);
+			break;
+		}
+		printf("%d + ", i);
+		sum += i;
+	}
+	return 0;
+}
+*/
+
+//쌤의 풀이
+#include<stdio.h>
+int main(){
+	int a,b,sum=0,i;
+	scanf("%d %d", &a, &b);
+	for(i = a; i<b; i++){
+		sum += i;
+		printf("%d + ", i);
+	}
+	printf("%d = %d", i, sum+i);
+	return 0;
+}
