@@ -1,0 +1,20 @@
+#include<stdio.h>
+int n, arr[10000001], m, i, t;//n은 입력받은 배열 위치, m도 입력받은 배열위치
+int main(void) {
+	scanf("%d", &n);
+	for(i = 0; i<n ; i++){
+		scanf("%d", &t);//n변수에 인덱스 t를 입력받는다
+		arr[t] = 1;//t자리에 1을 삽입한다.
+	}
+	
+	scanf("%d", &m);
+	for(i = 0; i < m; i++)
+	{
+		scanf("%d", &t);
+		printf("%d ", arr[t]);//왜 t를 쓰는가..? => 인덱스기 때문에
+	}
+	
+	return 0;
+}
+
+//따라서 첫 번째 scanf("%d", &t)는 배열의 크기를 입력받기 위해 사용되고, 두 번째 scanf("%d", &t)는 배열의 인덱스 위치를 입력받아 해당 위치에 값을 삽입하기 위해 사용되는 것입니다.
