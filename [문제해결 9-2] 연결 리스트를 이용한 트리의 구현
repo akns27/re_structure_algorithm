@@ -79,6 +79,6 @@ int main() {
 
     // 메모리 해제
     freeTree(n1);
-    
+    //
     return 0;
 }
