@@ -1,0 +1,28 @@
+#include <stdio.h>
+
+int main() {
+	int n;//n은 숫자의 개수
+	scanf("%d", &n);
+	int arr[n];
+	
+	for (int i = 0; i < n; i++)
+		scanf("%d", &arr[i]);
+
+	for (int i = 0; i < n; i++) {
+		printf("%d: ", i + 1);//i가 0부터 시작하므로 i+1
+		
+		for (int k = 0; k < n; k++) {
+			if (i == k)
+				continue;//i와 j가 같으면 반복문 뛰어 넘기
+				
+			if (arr[i] < arr[k])
+				printf("< ");
+			else if (arr[i] == arr[k])
+				printf("= ");
+			else if (arr[i] > arr[k])
+				printf("> ");
+		}
+		printf("\n");
+	}
+	return 0;
+}
