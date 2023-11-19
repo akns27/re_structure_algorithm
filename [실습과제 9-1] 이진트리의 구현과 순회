@@ -1,0 +1,80 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <memory.h>
+#define MAX_QUEUE_SIZE 100
+typedef struct TNode {
+    int data;
+    struct TNode *left;
+    struct TNode *right;
+} TNode;
+
+
+
+typedef TNode *element;
+typedef struct {
+    element data[MAX_QUEUE_SIZE];
+    int front, rear;
+} Queue;
+
+void init_queue(Queue *q) {
+    q->front = q->rear = 0;
+}
+
+int is_empty(Queue *q) {
+    return q->front == q->rear;
+}
+
+int is_full(Queue *q) {
+    return (q->rear + 1) % MAX_QUEUE_SIZE == q->front;
+}
+
+void enqueue(Queue *q, element item) {
+    if (is_full(q)) {
+        error("queue is full");
+    }
+    q->rear = (q->rear + 1) % MAX_QUEUE_SIZE;
+    q->data[q->rear] = item;
+}
+
+element dequeue(Queue *q) {
+    if (is_empty(q)) {
+        error("queue is empty");
+    }
+    q->front = (q->front + 1) % MAX_QUEUE_SIZE;
+    return q->data[q->front];
+}
+
+void level_order(TNode *ptr) {
+    Queue q;
+    init_queue(&q);
+    if (ptr == NULL) return;
+    enqueue(&q, ptr);
+
+    while (!is_empty(&q)) {
+        ptr = dequeue(&q);
+        printf("[ %d ]  ", ptr->data);
+
+        if (ptr->left)
+					enqueue(&q, ptr->left);
+        if
+					(ptr->right) enqueue(&q, ptr->right);
+    }
+}
+
+int main() {
+    TNode n1 = {1, NULL, NULL};
+    TNode n2 = {4, &n1, NULL};
+    TNode n3 = {16, NULL, NULL};
+    TNode n4 = {25, NULL, NULL};
+    TNode n5 = {20, NULL, &n4};
+    TNode n6 = {15, &n2, &n5};
+
+    n2.right = &n3;
+    TNode *root = &n6;
+
+    printf("레벨 순회 = ");
+    level_order(root);
+    printf("\n");
+
+    return 0;
+}
